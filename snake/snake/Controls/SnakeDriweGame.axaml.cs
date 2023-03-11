@@ -1,5 +1,6 @@
 using Avalonia;
 using Avalonia.Controls;
+using Avalonia.Input;
 using Avalonia.Interactivity;
 using Avalonia.Media;
 using snake.Abstract;
@@ -54,6 +55,7 @@ namespace snake.Controls
         {
             // Подписываемся на изменение словаря
             RowColumnProperty.Changed.Subscribe(x => HandleRowColumnChanged(x.Sender, x.NewValue.GetValueOrDefault<bool>()));
+            
             // Подписываемся на изменение свойств окна
             PropertyChanged += OnPropertyChangedListener;
             InitializeComponent();

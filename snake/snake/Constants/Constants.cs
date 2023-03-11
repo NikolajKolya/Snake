@@ -5,6 +5,6 @@
         /// <summary>
         /// Game field size
         /// </summary>
-        public const int GameFieldSize = 20;
+        public const int GameFieldSize = 21;
     }
 }
