@@ -19,6 +19,12 @@ namespace snake.Controls
 
         #endregion
 
+        #region Squares
+
+        private const double SquaresPenThickness = 1.0;
+
+        #endregion
+
         #region Colors
 
         private readonly Color EmptyColor = new Color(6, 0, 25, 25);
@@ -26,8 +32,6 @@ namespace snake.Controls
         private readonly Color AppleColor = Colors.Blue;
 
         #endregion
-
-        private const double GridSize = 10;
 
         #endregion
 
@@ -38,10 +42,10 @@ namespace snake.Controls
         /// <summary>
         /// Свойство управления словарем
         /// </summary>
-        public static readonly AttachedProperty<Dictionary<Point, SquareState>> RowColumnProperty
-            = AvaloniaProperty.RegisterAttached<SnakeDriweGame, Interactive, Dictionary<Point, SquareState>>(nameof(RowColumn));
+        public static readonly AttachedProperty<Dictionary<int, SquareState>> RowColumnProperty
+            = AvaloniaProperty.RegisterAttached<SnakeDriweGame, Interactive, Dictionary<int, SquareState>>(nameof(RowColumn));
 
-        public Dictionary<Point, SquareState> RowColumn
+        public Dictionary<int, SquareState> RowColumn
         {
             get { return GetValue(RowColumnProperty); }
             set { SetValue(RowColumnProperty, value); }
@@ -73,14 +77,20 @@ namespace snake.Controls
 
 
             // рисуем сетку
-            for (double y = 0; y <= GridSize; y++)
+            for (double y = 0; y <= Constants.Constants.GameFieldSize; y++)
             {
-                context.DrawLine(pen, new Point(0, _height / GridSize * y), new Point(_width, _height / GridSize * y));
+                context.DrawLine(
+                    pen,
+                    new Point(0, _height / (double)Constants.Constants.GameFieldSize * y),
+                    new Point(_width, _height / (double)Constants.Constants.GameFieldSize * y));
             }
 
-            for (double x = 0; x <= GridSize; x++)
+            for (double x = 0; x <= Constants.Constants.GameFieldSize; x++)
             {
-                context.DrawLine(pen, new Point(_width / GridSize * x, 0), new Point(_width / GridSize * x, _height));
+                context.DrawLine(
+                    pen,
+                    new Point(_width / (double)Constants.Constants.GameFieldSize * x, 0),
+                    new Point(_width / (double)Constants.Constants.GameFieldSize * x, _height));
             }
         }
 
@@ -90,19 +100,21 @@ namespace snake.Controls
             var snakeBrush = new SolidColorBrush(SnakeColor);
             var appleBrush = new SolidColorBrush(AppleColor);
 
-            var emptyPen = new Pen(emptyBrush, 1);
-            var snakePen = new Pen(snakeBrush, 1);
-            var applePen = new Pen(appleBrush, 1);
+            var emptyPen = new Pen(emptyBrush, SquaresPenThickness);
+            var snakePen = new Pen(snakeBrush, SquaresPenThickness);
+            var applePen = new Pen(appleBrush, SquaresPenThickness);
 
 
             IBrush squareBrush;
             IPen squarePen;
 
-            for (double y = 0; y < GridSize; y++)
+            for (int y = 0; y < Constants.Constants.GameFieldSize; y++)
             {
-                for (double x = 0; x < GridSize; x++)
+                for (int x = 0; x < Constants.Constants.GameFieldSize; x++)
                 {
-                    switch(RowColumn[new Point(x, y)])
+                    var index = y * Constants.Constants.GameFieldSize + x;
+
+                    switch(RowColumn[index])
                     {
                         case SquareState.Nothing:
                             squareBrush = emptyBrush;
@@ -128,8 +140,8 @@ namespace snake.Controls
                         brush: squareBrush,
                         pen: squarePen,
                         rect: new Avalonia.Rect(
-                            new Point(x * _width / GridSize, y * _height / GridSize),
-                            new Point((x + 1) * _width / GridSize, (y + 1) * _height / GridSize)),
+                            new Point(x * _width / (double)Constants.Constants.GameFieldSize, y * _height / (double)Constants.Constants.GameFieldSize),
+                            new Point((x + 1) * _width / (double)Constants.Constants.GameFieldSize, (y + 1) * _height / (double)Constants.Constants.GameFieldSize)),
                         radiusX: 0,
                         radiusY: 0,
                         boxShadows: default);

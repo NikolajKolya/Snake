@@ -10,25 +10,26 @@ namespace snake.ViewModels
 {
     public class MainWindowViewModel : ViewModelBase
     {
-        private Dictionary<Point, SquareState> _RowColumn = new Dictionary<Point, SquareState>();
-        public Dictionary<Point, SquareState> RowColumn
+        private Dictionary<int, SquareState> _rowColumn = new Dictionary<int, SquareState>();
+        public Dictionary<int, SquareState> RowColumn
         {
-            get => _RowColumn;
-            set => this.RaiseAndSetIfChanged(ref _RowColumn, value);
+            get => _rowColumn;
+            set => this.RaiseAndSetIfChanged(ref _rowColumn, value);
         }
         public MainWindowViewModel()
         {
-            for(int y = 0; y < 10; y++)
+            for(int y = 0; y < Constants.Constants.GameFieldSize; y++)
             {
-                for(int x = 0; x < 10; x++)
+                for(int x = 0; x < Constants.Constants.GameFieldSize; x++)
                 {
-                    _RowColumn[new Point(x, y)] = SquareState.Nothing;
+                    _rowColumn[y * Constants.Constants.GameFieldSize + x] = SquareState.Nothing;
                 }
             }
-            _RowColumn[new Point(5, 5)] = SquareState.Snake;
-            _RowColumn[new Point(5, 6)] = SquareState.Snake;
-            _RowColumn[new Point(5, 7)] = SquareState.Snake;
-            _RowColumn[new Point(3, 2)] = SquareState.Aplle;
+
+            _rowColumn[5 * Constants.Constants.GameFieldSize + 5] = SquareState.Snake;
+            _rowColumn[6 * Constants.Constants.GameFieldSize + 5] = SquareState.Snake;
+            _rowColumn[7 * Constants.Constants.GameFieldSize + 5] = SquareState.Snake;
+            _rowColumn[2 * Constants.Constants.GameFieldSize + 3] = SquareState.Aplle;
         }
     }
 }
