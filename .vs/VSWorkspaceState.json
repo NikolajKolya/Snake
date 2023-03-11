@@ -1,6 +1,10 @@
 {
   "ExpandedNodes": [
-    ""
+    "",
+    "\\snake",
+    "\\snake\\snake",
+    "\\snake\\snake\\Controls"
   ],
+  "SelectedNode": "\\snake\\snake\\Controls\\SnakeDriweGame.axaml.cs",
   "PreviewInSolutionExplorer": false
 }

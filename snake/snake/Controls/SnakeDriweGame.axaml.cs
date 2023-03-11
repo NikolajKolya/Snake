@@ -11,9 +11,24 @@ namespace snake.Controls
     public partial class SnakeDriweGame : UserControl
     {
         #region const
-        private readonly SolidColorBrush LinePen = new SolidColorBrush(new Color(100, 0, 0, 255));
-        private const double Row = 10;
-        private IBrush brush = new SolidColorBrush(new Color(150, 0, 0, 255));
+
+        #region Lines
+
+        private readonly SolidColorBrush LineBrush = new SolidColorBrush(new Color(220, 25, 25, 25));
+        private const double LinePenThickness = 2.0;
+
+        #endregion
+
+        #region Colors
+
+        private readonly Color EmptyColor = new Color(6, 0, 25, 25);
+        private readonly Color SnakeColor = Colors.Green;
+        private readonly Color AppleColor = Colors.Blue;
+
+        #endregion
+
+        private const double GridSize = 10;
+
         #endregion
 
         private double _scaling;
@@ -21,14 +36,11 @@ namespace snake.Controls
         private int _height;
 
         /// <summary>
-        /// Свойство управления зеленым огнём
+        /// Свойство управления словарем
         /// </summary>
         public static readonly AttachedProperty<Dictionary<Point, SquareState>> RowColumnProperty
             = AvaloniaProperty.RegisterAttached<SnakeDriweGame, Interactive, Dictionary<Point, SquareState>>(nameof(RowColumn));
 
-        /// <summary>
-        /// Горит-ли зеленый огонь
-        /// </summary>
         public Dictionary<Point, SquareState> RowColumn
         {
             get { return GetValue(RowColumnProperty); }
@@ -36,6 +48,7 @@ namespace snake.Controls
         }
         public SnakeDriweGame()
         {
+            // Подписываемся на изменение словаря
             RowColumnProperty.Changed.Subscribe(x => HandleRowColumnChanged(x.Sender, x.NewValue.GetValueOrDefault<bool>()));
             // Подписываемся на изменение свойств окна
             PropertyChanged += OnPropertyChangedListener;
@@ -44,45 +57,82 @@ namespace snake.Controls
 
         private void HandleRowColumnChanged(IAvaloniaObject sender, bool v)
         {
-            InitializeComponent();
+            InvalidateVisual();
         }
+
         public override void Render(DrawingContext context)
         {
             base.Render(context);
-            DrawLines(context, LinePen);
+            DrawSquares(context);
+            DrawLines(context);
         }
 
-        private void DrawLines(DrawingContext context, SolidColorBrush LinePen)
+        private void DrawLines(DrawingContext context)
         {
-            for (double y = 0; y <= Row; y++)
+            var pen = new Pen(LineBrush, LinePenThickness);
+
+
+            // рисуем сетку
+            for (double y = 0; y <= GridSize; y++)
             {
-                context.DrawLine(new Pen(LinePen, 4), new Point(0, _height / Row * y), new Point(_width, _height / Row * y));
+                context.DrawLine(pen, new Point(0, _height / GridSize * y), new Point(_width, _height / GridSize * y));
             }
-            for (double x = 0; x <= Row; x++)
+
+            for (double x = 0; x <= GridSize; x++)
             {
-                context.DrawLine(new Pen(LinePen, 4), new Point(_width / Row * x , 0), new Point(_width / Row * x, _height));
+                context.DrawLine(pen, new Point(_width / GridSize * x, 0), new Point(_width / GridSize * x, _height));
             }
-            for(double y = 0; y < 10; y++)
+        }
+
+        private void DrawSquares(DrawingContext context)
+        {
+            var emptyBrush = new SolidColorBrush(EmptyColor);
+            var snakeBrush = new SolidColorBrush(SnakeColor);
+            var appleBrush = new SolidColorBrush(AppleColor);
+
+            var emptyPen = new Pen(emptyBrush, 1);
+            var snakePen = new Pen(snakeBrush, 1);
+            var applePen = new Pen(appleBrush, 1);
+
+
+            IBrush squareBrush;
+            IPen squarePen;
+
+            for (double y = 0; y < GridSize; y++)
             {
-                for (double x = 0; x < 10; x++)
-                {/*
-                    switch (RowColumn[new Point(x, y)])
+                for (double x = 0; x < GridSize; x++)
+                {
+                    switch(RowColumn[new Point(x, y)])
                     {
                         case SquareState.Nothing:
-                            return;
+                            squareBrush = emptyBrush;
+                            squarePen = emptyPen;
+                            break;
+
                         case SquareState.Snake:
-                            brush = new SolidColorBrush(Colors.Red);
-                            return;
+                            squareBrush = snakeBrush;
+                            squarePen = snakePen;
+                            break;
+
                         case SquareState.Aplle:
-                            brush = new SolidColorBrush(Colors.Green);
-                            return;
-                    }*/
-                    context.DrawRectangle(brush,
-                        new Pen(new SolidColorBrush(new Color(0, 0, 0, 0)), 1),
-                        new Avalonia.Rect(new Point(x * _width / Row, y * _height / Row),
-                        new Point((x + 1) * _width / Row, (y + 1) * _height / Row)),
-                        900,
-                        default);
+                            squareBrush = appleBrush;
+                            squarePen = applePen;
+                            break;
+
+                        default:
+                            throw new InvalidOperationException("Unknown square state!");
+                    }
+
+                    // рисуем квадраты
+                    context.DrawRectangle(
+                        brush: squareBrush,
+                        pen: squarePen,
+                        rect: new Avalonia.Rect(
+                            new Point(x * _width / GridSize, y * _height / GridSize),
+                            new Point((x + 1) * _width / GridSize, (y + 1) * _height / GridSize)),
+                        radiusX: 0,
+                        radiusY: 0,
+                        boxShadows: default);
                 }
             }
         }
