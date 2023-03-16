@@ -12,5 +12,9 @@ namespace snake.GameLogic.Abstract
         Dictionary<int, SquareState> GetSnakeSquares();
 
         void MoveForward();
+
+        void MoveLeft();
+
+        void MoveRight();
     }
 }

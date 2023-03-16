@@ -43,6 +43,7 @@ namespace snake
 
             services.AddSingleton<IGameLogic, GameLogic.Implementations.GameLogic>();
             services.AddSingleton<ISnake, GameLogic.Implementations.Snake>();
+            services.AddSingleton<IRandomApple, GameLogic.Implementations.RandomApple>();
 
             return services;
         }

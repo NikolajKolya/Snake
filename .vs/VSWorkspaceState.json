@@ -3,8 +3,9 @@
     "",
     "\\snake",
     "\\snake\\snake",
-    "\\snake\\snake\\Controls"
+    "\\snake\\snake\\Controls",
+    "\\snake\\snake\\Views"
   ],
-  "SelectedNode": "\\snake\\snake\\Controls\\SnakeDriweGame.axaml.cs",
+  "SelectedNode": "\\snake\\snake.sln",
   "PreviewInSolutionExplorer": false
 }
