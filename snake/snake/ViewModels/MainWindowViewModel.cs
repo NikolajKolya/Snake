@@ -10,6 +10,7 @@ using System.Text;
 using Microsoft.Extensions.DependencyInjection;
 using System.Timers;
 using snake.GameLogic.Implementations;
+using System.Reactive;
 
 namespace snake.ViewModels
 {
@@ -23,7 +24,16 @@ namespace snake.ViewModels
 
         private Timer _stepsTimer;
 
+        private string _startAndStopButtonName;
         private int applePlace = 26;
+
+        public ReactiveCommand<Unit, Unit> StartAndStopButton { get; }
+
+        public string StartAndStopButtonName
+        {
+            get => _startAndStopButtonName;
+            set => this.RaiseAndSetIfChanged(ref _startAndStopButtonName, value);
+        }
 
         public Dictionary<int, SquareState> RowColumn
         {
@@ -37,6 +47,10 @@ namespace snake.ViewModels
 
             _gameLogic = Program.Di.GetService<IGameLogic>();
 
+            StartAndStopButton = ReactiveCommand.Create(StartStopGame);
+
+            StartAndStopButtonName = "Стaрт";
+
             ClearGameFiled();
 
             RowColumn[2 * Constants.Constants.GameFieldSize + 3] = SquareState.Aplle;
@@ -44,8 +58,14 @@ namespace snake.ViewModels
             // Starting timer
             _stepsTimer = new Timer(200);
             _stepsTimer.AutoReset = true;
-            _stepsTimer.Enabled = true;
+            _stepsTimer.Enabled = false;
             _stepsTimer.Elapsed += OnStepsTimer;
+        }
+
+        private void StartStopGame()
+        {
+            _stepsTimer.Enabled = !_stepsTimer.Enabled;
+            StartAndStopButtonName = (_stepsTimer.Enabled == true ? "Стоп ": "Стaрт");
         }
 
         private void ClearGameFiled()

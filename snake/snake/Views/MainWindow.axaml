@@ -25,7 +25,8 @@
 			Grid.Row="1"
 			HorizontalAlignment="Center"
 			VerticalAlignment="Center"
-			Content="Старт">
+			Command="{ Binding StartAndStopButton }"
+			Content="{ Binding StartAndStopButtonName }">
 		</Button>
 	</Grid>
 
