@@ -4,8 +4,10 @@
     "\\snake",
     "\\snake\\snake",
     "\\snake\\snake\\Controls",
+    "\\snake\\snake\\GameLogic",
+    "\\snake\\snake\\GameLogic\\Implementations",
     "\\snake\\snake\\Views"
   ],
-  "SelectedNode": "\\snake\\snake.sln",
+  "SelectedNode": "\\snake\\snake\\GameLogic\\Implementations\\Snake.cs",
   "PreviewInSolutionExplorer": false
 }

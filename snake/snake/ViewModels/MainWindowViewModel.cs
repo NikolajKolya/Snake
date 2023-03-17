@@ -9,16 +9,21 @@ using System.Data.SqlTypes;
 using System.Text;
 using Microsoft.Extensions.DependencyInjection;
 using System.Timers;
+using snake.GameLogic.Implementations;
 
 namespace snake.ViewModels
 {
     public class MainWindowViewModel : ViewModelBase
     {
+        private readonly IRandomApple _randomApple;
+
         private readonly IGameLogic _gameLogic;
 
         private Dictionary<int, SquareState> _rowColumn = new Dictionary<int, SquareState>();
 
         private Timer _stepsTimer;
+
+        private int applePlace = 26;
 
         public Dictionary<int, SquareState> RowColumn
         {
@@ -28,6 +33,8 @@ namespace snake.ViewModels
 
         public MainWindowViewModel()
         {
+            _randomApple = Program.Di.GetService<IRandomApple>();
+
             _gameLogic = Program.Di.GetService<IGameLogic>();
 
             ClearGameFiled();
@@ -35,7 +42,7 @@ namespace snake.ViewModels
             RowColumn[2 * Constants.Constants.GameFieldSize + 3] = SquareState.Aplle;
 
             // Starting timer
-            _stepsTimer = new Timer(1000);
+            _stepsTimer = new Timer(200);
             _stepsTimer.AutoReset = true;
             _stepsTimer.Enabled = true;
             _stepsTimer.Elapsed += OnStepsTimer;
@@ -61,12 +68,28 @@ namespace snake.ViewModels
             var snakeSquares = _gameLogic
                 .GetSnakeSquares();
 
+            RowColumn[applePlace] = SquareState.Aplle;
+
             foreach (var snakeSquare in snakeSquares)
             {
-                RowColumn[snakeSquare.Key] = snakeSquare.Value;
+                try
+                {
+                    if(snakeSquare.Key >= Constants.Constants.GameFieldSize * Constants.Constants.GameFieldSize)
+                    {
+                        _gameLogic.Restart();
+                    }
+                    if (RowColumn[snakeSquare.Key] == SquareState.Aplle)
+                    {
+                        applePlace = _randomApple.GenreateRandomApple();
+                        _gameLogic.AppleIsEaten();
+                    }
+                    RowColumn[snakeSquare.Key] = snakeSquare.Value;
+                }
+                catch (Exception ex)
+                {
+                    _gameLogic.Restart();
+                }
             }
-
-            RowColumn[2 * Constants.Constants.GameFieldSize + 3] = SquareState.Aplle;
 
             RowColumn = new Dictionary<int, SquareState>(RowColumn);
         }

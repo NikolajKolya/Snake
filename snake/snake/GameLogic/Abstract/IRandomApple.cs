@@ -6,7 +6,8 @@ using System.Threading.Tasks;
 
 namespace snake.GameLogic.Abstract
 {
-    internal interface IRandomApple
+    public interface IRandomApple
     {
+        int GenreateRandomApple();
     }
 }

@@ -61,5 +61,15 @@ namespace snake.GameLogic.Implementations
                 aORd = ButtonState.NaN;
             }
         }
+
+        public void Restart()
+        {
+            _snake.RestartPosition();
+        }
+
+        public void AppleIsEaten()
+        {
+            _snake.SnakeBecomeBiger();
+        }
     }
 }

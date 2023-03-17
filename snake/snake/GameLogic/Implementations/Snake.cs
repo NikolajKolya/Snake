@@ -11,6 +11,9 @@ namespace snake.GameLogic.Implementations
 {
     public class Snake : ISnake
     {
+        Square firstHead = new Square();
+
+        Square oldHead = new Square();
         private int SnakeDirectionNow = 0;
         private SnakeDirection SnakeGo = SnakeDirection.Up;
 
@@ -21,41 +24,58 @@ namespace snake.GameLogic.Implementations
 
         public Snake()
         {
+            RestartPosition();
+        }
+
+        public void RestartPosition()
+        {
             int center = Constants.Constants.GameFieldSize / 2;
+
+            _snakeSquares.Clear();
 
             _snakeSquares.Add(new Square { X = center, Y = center });
             _snakeSquares.Add(new Square { X = center, Y = center - 1 });
             _snakeSquares.Add(new Square { X = center, Y = center - 2 });
+            SnakeDirectionNow = 0;
+            SnakeGo = SnakeDirection.Up;
         }
-
         public Dictionary<int, SquareState> GetSnakeSquares()
         {
             // Потом почитай про LINQ
-            return _snakeSquares
+            return
+                _snakeSquares
                 .ToDictionary(sq => sq.GetIndex(), sq => SquareState.Snake);
         }
 
         public void MoveForward()
         {
-            _snakeSquares.RemoveAt(0);
+            try
+            {
+                firstHead = _snakeSquares.First();
 
-            // Старая голова
-            var oldHead = _snakeSquares.Last();
+                _snakeSquares.RemoveAt(0);
+
+                // Старая голова
+                oldHead = _snakeSquares.Last();
+            }
+            catch (Exception ex)
+            {
+            }
 
             switch (SnakeGo)
             {
                 case SnakeDirection.Up:
                     _snakeSquares.Add(new Square { X = oldHead.X, Y = oldHead.Y - 1 });
-                    return;
+                    break;
                 case SnakeDirection.Down:
                     _snakeSquares.Add(new Square { X = oldHead.X, Y = oldHead.Y + 1 });
-                    return;
+                    break;
                 case SnakeDirection.Left:
                     _snakeSquares.Add(new Square { X = oldHead.X - 1, Y = oldHead.Y });
-                    return;
+                    break;
                 case SnakeDirection.Right:
                     _snakeSquares.Add(new Square { X = oldHead.X + 1, Y = oldHead.Y });
-                    return;
+                    break;
             }
         }
 
@@ -76,6 +96,10 @@ namespace snake.GameLogic.Implementations
 
             SnakeGo = (SnakeDirection)SnakeDirectionNow;
             MoveForward();
+        }
+        public void SnakeBecomeBiger()
+        {
+            _snakeSquares.Insert(0, new Square { X = firstHead.X, Y = firstHead.Y });
         }
     }
 }

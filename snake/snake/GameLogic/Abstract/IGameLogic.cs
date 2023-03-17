@@ -13,6 +13,10 @@ namespace snake.GameLogic.Abstract
     /// </summary>
     internal interface IGameLogic
     {
+
+        void AppleIsEaten();
+
+        void Restart();
         /// <summary>
         /// Вызовите меня когда нажата кнопка
         /// </summary>
