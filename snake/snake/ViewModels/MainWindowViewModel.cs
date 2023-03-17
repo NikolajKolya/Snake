@@ -74,7 +74,7 @@ namespace snake.ViewModels
             {
                 try
                 {
-                    if(snakeSquare.Key >= Constants.Constants.GameFieldSize * Constants.Constants.GameFieldSize)
+                    if (snakeSquare.Key >= Constants.Constants.GameFieldSize * Constants.Constants.GameFieldSize)
                     {
                         _gameLogic.Restart();
                     }
@@ -83,9 +83,13 @@ namespace snake.ViewModels
                         applePlace = _randomApple.GenreateRandomApple();
                         _gameLogic.AppleIsEaten();
                     }
+                    if (RowColumn[snakeSquare.Key] == snakeSquare.Value)
+                    {
+                        _gameLogic.Restart();
+                    }
                     RowColumn[snakeSquare.Key] = snakeSquare.Value;
                 }
-                catch (Exception ex)
+                catch(Exception ex)
                 {
                     _gameLogic.Restart();
                 }

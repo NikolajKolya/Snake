@@ -42,25 +42,28 @@ namespace snake.GameLogic.Implementations
         public Dictionary<int, SquareState> GetSnakeSquares()
         {
             // Потом почитай про LINQ
-            return
-                _snakeSquares
-                .ToDictionary(sq => sq.GetIndex(), sq => SquareState.Snake);
+            try
+            {
+                return
+                    _snakeSquares
+                    .ToDictionary(sq => sq.GetIndex(), sq => SquareState.Snake);
+            }
+            catch(Exception ex)
+            {
+                RestartPosition();
+                return new Dictionary<int, SquareState>();
+            }
+
         }
 
         public void MoveForward()
         {
-            try
-            {
-                firstHead = _snakeSquares.First();
+            firstHead = _snakeSquares.First();
 
-                _snakeSquares.RemoveAt(0);
+            _snakeSquares.RemoveAt(0);
 
-                // Старая голова
-                oldHead = _snakeSquares.Last();
-            }
-            catch (Exception ex)
-            {
-            }
+            // Старая голова
+            oldHead = _snakeSquares.Last();
 
             switch (SnakeGo)
             {
