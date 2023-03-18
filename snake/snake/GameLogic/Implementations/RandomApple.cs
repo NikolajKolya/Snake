@@ -12,13 +12,22 @@ namespace snake.GameLogic.Implementations
     {
         private readonly Random _random = new Random();
 
-        public Square GenеrаteRandomApple()
+        public Square GenеrаteRandomApple(IReadOnlyCollection<Square> snakeSquares)
         {
-            return new Square()
+            while (true)
             {
-                X = _random.Next(0, Constants.Constants.GameFieldSize),
-                Y = _random.Next(0, Constants.Constants.GameFieldSize),
-            };
+                var potentialApple = new Square()
+                {
+                    X = _random.Next(0, Constants.Constants.GameFieldSize),
+                    Y = _random.Next(0, Constants.Constants.GameFieldSize),
+                };
+
+                if (!snakeSquares
+                    .Any(s => s.X == potentialApple.X && s.Y == potentialApple.Y))
+                {
+                    return potentialApple;
+                }
+            }
         }
     }
 }

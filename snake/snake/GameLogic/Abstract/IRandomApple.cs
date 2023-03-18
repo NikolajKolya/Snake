@@ -9,6 +9,6 @@ namespace snake.GameLogic.Abstract
 {
     public interface IRandomApple
     {
-        Square GenеrаteRandomApple();
+        Square GenеrаteRandomApple(IReadOnlyCollection<Square> snakeSquares);
     }
 }

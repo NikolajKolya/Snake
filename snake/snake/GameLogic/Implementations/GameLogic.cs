@@ -25,7 +25,7 @@ namespace snake.GameLogic.Implementations
             _snake = snake;
             _randomApple = randomApple;
 
-            _applePlace = _randomApple.GenеrаteRandomApple();
+            _applePlace = _randomApple.GenеrаteRandomApple(_snake.GetSnakeSquares().Select(s => s.Key).ToList());
         }
 
         public Dictionary<Square, SquareState> GetSnakeSquares()
@@ -100,7 +100,7 @@ namespace snake.GameLogic.Implementations
         {
             _snake.SnakeBecomeBigger();
 
-            _applePlace = _randomApple.GenеrаteRandomApple();
+            _applePlace = _randomApple.GenеrаteRandomApple(_snake.GetSnakeSquares().Select(s => s.Key).ToList());
         }
 
         public Square GetApplePlace()

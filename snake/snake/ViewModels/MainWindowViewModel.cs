@@ -105,32 +105,11 @@ namespace snake.ViewModels
 
                 RowColumn.Remove(currentSnakeSquare.Key);
                 RowColumn.Add(new Square() { X = snakeSquare.X, Y = snakeSquare.Y }, SquareState.Snake);
-
-                ////С помощью try catch ловим Exception который вылетает когда змейка переходит верхнию границу
-                //try
-                //{
-                ////Еслки змейка переходит нижнию границу
-                //if (snakeSquare.Key >= Constants.Constants.GameFieldSize * Constants.Constants.GameFieldSize)
-                //{
-                //    _gameLogic.Restart();
-                //}
-                //Еслки змейка налетает на яблоко
-                //if (RowColumn[snakeSquare.Key] == SquareState.Aplle)
-                //{
-                //    applePlace = _randomApple.GenеrаteRandomApple();
-                //    _gameLogic.AppleIsEaten();
-                //}
-                //RowColumn[snakeSquare.Key] = snakeSquare.Value;
-                //}
-                //catch(Exception ex)
-                //{
-                //    _gameLogic.Restart();
-                //}
-
-                _stepsTimer.Start();
             }
 
             RowColumn = new Dictionary<Square, SquareState>(RowColumn);
+
+            _stepsTimer.Start();
         }
 
         public void OnKeyPress(KeyEventArgs keyEventArgs)
