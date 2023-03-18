@@ -12,6 +12,6 @@ namespace snake.Abstract
 
         D,
 
-        NaN
+        NaN // Not a Number, better to call it undefined
     }
 }

@@ -48,11 +48,11 @@ namespace snake.GameLogic.Implementations
 
         public void OnKeyPress(Key key)
         {
-            if (key.ToString() == "A")
+            if (key == Key.A)
             {
                 AorD = ButtonState.A;
             }
-            else if (key.ToString() == "D")
+            else if (key == Key.D)
             {
                 AorD = ButtonState.D;
             }
@@ -69,7 +69,7 @@ namespace snake.GameLogic.Implementations
 
         public void AppleIsEaten()
         {
-            _snake.SnakeBecomeBiger();
+            _snake.SnakeBecomeBigger();
         }
     }
 }

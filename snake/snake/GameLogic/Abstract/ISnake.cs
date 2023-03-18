@@ -11,7 +11,7 @@ namespace snake.GameLogic.Abstract
     {
         Dictionary<int, SquareState> GetSnakeSquares();
 
-        void SnakeBecomeBiger();
+        void SnakeBecomeBigger();
 
         void RestartPosition();
 

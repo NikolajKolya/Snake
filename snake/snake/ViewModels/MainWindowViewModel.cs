@@ -56,7 +56,7 @@ namespace snake.ViewModels
             RowColumn[2 * Constants.Constants.GameFieldSize + 3] = SquareState.Aplle;
 
             // Starting timer
-            _stepsTimer = new Timer(200);
+            _stepsTimer = new Timer(300);
             _stepsTimer.AutoReset = true;
             _stepsTimer.Enabled = false;
             _stepsTimer.Elapsed += OnStepsTimer;

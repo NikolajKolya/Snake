@@ -6,8 +6,9 @@
     "\\snake\\snake\\Controls",
     "\\snake\\snake\\GameLogic",
     "\\snake\\snake\\GameLogic\\Implementations",
+    "\\snake\\snake\\ViewModels",
     "\\snake\\snake\\Views"
   ],
-  "SelectedNode": "\\snake\\snake\\GameLogic\\Implementations\\Snake.cs",
+  "SelectedNode": "\\snake\\snake\\ViewModels\\MainWindowViewModel.cs",
   "PreviewInSolutionExplorer": false
 }
