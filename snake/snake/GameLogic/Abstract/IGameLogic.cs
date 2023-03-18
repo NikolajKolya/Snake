@@ -1,5 +1,6 @@
 ﻿using Avalonia.Input;
 using snake.Abstract;
+using snake.GameLogic.Abstract.Models;
 using System;
 using System.Collections.Generic;
 using System.Linq;
@@ -30,6 +31,11 @@ namespace snake.GameLogic.Abstract
         /// <summary>
         /// Вызовите меня, чтобы получить змеиные квадраты
         /// </summary>
-        Dictionary<int, SquareState> GetSnakeSquares();
+        Dictionary<Square, SquareState> GetSnakeSquares();
+
+        /// <summary>
+        /// Вызовите меня, чтобы получить координаты яблока
+        /// </summary>
+        Square GetApplePlace();
     }
 }

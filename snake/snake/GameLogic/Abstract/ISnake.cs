@@ -1,4 +1,5 @@
 ﻿using snake.Abstract;
+using snake.GameLogic.Abstract.Models;
 using System;
 using System.Collections.Generic;
 using System.Linq;
@@ -9,7 +10,7 @@ namespace snake.GameLogic.Abstract
 {
     public interface ISnake
     {
-        Dictionary<int, SquareState> GetSnakeSquares();
+        Dictionary<Square, SquareState> GetSnakeSquares();
 
         void SnakeBecomeBigger();
 

@@ -1,6 +1,7 @@
 ﻿using Avalonia.Input;
 using snake.Abstract;
 using snake.GameLogic.Abstract;
+using snake.GameLogic.Abstract.Models;
 using snake.ViewModels;
 using System;
 using System.Collections.Generic;
@@ -15,13 +16,19 @@ namespace snake.GameLogic.Implementations
     {
         private ButtonState AorD = ButtonState.NaN;
         private readonly ISnake _snake;
+        private readonly IRandomApple _randomApple;
 
-        public GameLogic(ISnake snake)
+        private Square _applePlace;
+
+        public GameLogic(ISnake snake, IRandomApple randomApple)
         {
             _snake = snake;
+            _randomApple = randomApple;
+
+            _applePlace = _randomApple.GenеrаteRandomApple();
         }
 
-        public Dictionary<int, SquareState> GetSnakeSquares()
+        public Dictionary<Square, SquareState> GetSnakeSquares()
         {
             return _snake.GetSnakeSquares();
         }
@@ -32,17 +39,39 @@ namespace snake.GameLogic.Implementations
             {
                 case ButtonState.NaN:
                     _snake.MoveForward();
-                    return;
+                    break;
 
                 case ButtonState.A:
                     _snake.MoveLeft();
                     AorD = ButtonState.NaN;
-                    return;
+                    break;
 
                 case ButtonState.D:
                     _snake.MoveRight();
                     AorD = ButtonState.NaN;
-                    return;
+                    break;
+            }
+
+            // Находим голову змейки
+            var head = _snake
+                .GetSnakeSquares()
+                .Last();
+
+            if (head.Key.X < 0
+                ||
+                head.Key.X >= Constants.Constants.GameFieldSize
+                ||
+                head.Key.Y < 0
+                ||
+                head.Key.Y >= Constants.Constants.GameFieldSize)
+            {
+                Restart();
+            }
+
+            // Съедание яблока
+            if (head.Key.X == _applePlace.X && head.Key.Y == _applePlace.Y)
+            {
+                AppleIsEaten();
             }
         }
 
@@ -70,6 +99,13 @@ namespace snake.GameLogic.Implementations
         public void AppleIsEaten()
         {
             _snake.SnakeBecomeBigger();
+
+            _applePlace = _randomApple.GenеrаteRandomApple();
+        }
+
+        public Square GetApplePlace()
+        {
+            return _applePlace;
         }
     }
 }

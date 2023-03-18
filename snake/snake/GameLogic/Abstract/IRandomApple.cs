@@ -1,4 +1,5 @@
-﻿using System;
+﻿using snake.GameLogic.Abstract.Models;
+using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Text;
@@ -8,6 +9,6 @@ namespace snake.GameLogic.Abstract
 {
     public interface IRandomApple
     {
-        int GenеrаteRandomApple();
+        Square GenеrаteRandomApple();
     }
 }

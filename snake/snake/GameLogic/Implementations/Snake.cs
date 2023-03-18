@@ -43,7 +43,7 @@ namespace snake.GameLogic.Implementations
             _snakeSquares.Add(new Square { X = center, Y = center - 2 });
             _snakeGo = SnakeDirection.Up;
         }
-        public Dictionary<int, SquareState> GetSnakeSquares()
+        public Dictionary<Square, SquareState> GetSnakeSquares()
         {
             var isHitHerself = _snakeSquares
                 .Select(sq => sq.GetIndex()) // Select проецирует один объект в другой. Мы берём список квадратов и получем список индексов
@@ -54,11 +54,10 @@ namespace snake.GameLogic.Implementations
             if (isHitHerself) // Hit herself
             {
                 RestartPosition();
-                return new Dictionary<int, SquareState>();
             }
 
             return _snakeSquares
-                    .ToDictionary(sq => sq.GetIndex(), sq => SquareState.Snake);
+                    .ToDictionary(sq => sq, sq => SquareState.Snake);
         }
 
         public void MoveForward()

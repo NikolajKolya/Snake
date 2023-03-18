@@ -4,8 +4,10 @@ using Avalonia.Input;
 using Avalonia.Interactivity;
 using Avalonia.Media;
 using snake.Abstract;
+using snake.GameLogic.Abstract.Models;
 using System;
 using System.Collections.Generic;
+using System.Linq;
 
 namespace snake.Controls
 {
@@ -43,10 +45,10 @@ namespace snake.Controls
         /// <summary>
         /// Свойство управления словарем
         /// </summary>
-        public static readonly AttachedProperty<Dictionary<int, SquareState>> RowColumnProperty
-            = AvaloniaProperty.RegisterAttached<SnakeDriweGame, Interactive, Dictionary<int, SquareState>>(nameof(RowColumn));
+        public static readonly AttachedProperty<Dictionary<Square, SquareState>> RowColumnProperty
+            = AvaloniaProperty.RegisterAttached<SnakeDriweGame, Interactive, Dictionary<Square, SquareState>>(nameof(RowColumn));
 
-        public Dictionary<int, SquareState> RowColumn
+        public Dictionary<Square, SquareState> RowColumn
         {
             get { return GetValue(RowColumnProperty); }
             set { SetValue(RowColumnProperty, value); }
@@ -114,28 +116,35 @@ namespace snake.Controls
             {
                 for (int x = 0; x < Constants.Constants.GameFieldSize; x++)
                 {
-                    var index = y * Constants.Constants.GameFieldSize + x;
+                        var currentSquare = RowColumn
+                            .SingleOrDefault(s => s.Key.X == x && s.Key.Y == y);
 
-                    switch(RowColumn[index])
-                    {
-                        case SquareState.Nothing:
-                            squareBrush = emptyBrush;
-                            squarePen = emptyPen;
-                            break;
+                        // Не удалось найти квадрат
+                        if (currentSquare.Key == null)
+                        {
+                            continue;
+                        }
 
-                        case SquareState.Snake:
-                            squareBrush = snakeBrush;
-                            squarePen = snakePen;
-                            break;
+                        switch (currentSquare.Value)
+                        {
+                            case SquareState.Nothing:
+                                squareBrush = emptyBrush;
+                                squarePen = emptyPen;
+                                break;
 
-                        case SquareState.Aplle:
-                            squareBrush = appleBrush;
-                            squarePen = applePen;
-                            break;
+                            case SquareState.Snake:
+                                squareBrush = snakeBrush;
+                                squarePen = snakePen;
+                                break;
 
-                        default:
-                            throw new InvalidOperationException("Unknown square state!");
-                    }
+                            case SquareState.Aplle:
+                                squareBrush = appleBrush;
+                                squarePen = applePen;
+                                break;
+
+                            default:
+                                throw new InvalidOperationException("Unknown square state!");
+                        }
 
                     // рисуем квадраты
                     context.DrawRectangle(
