@@ -8,6 +8,6 @@ namespace snake.GameLogic.Abstract
 {
     public interface IRandomApple
     {
-        int GenreateRandomApple();
+        int GenеrаteRandomApple();
     }
 }

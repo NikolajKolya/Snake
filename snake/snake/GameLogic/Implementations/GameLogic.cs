@@ -13,7 +13,7 @@ namespace snake.GameLogic.Implementations
 {
     public class GameLogic : IGameLogic
     {
-        private ButtonState aORd = ButtonState.NaN;
+        private ButtonState AorD = ButtonState.NaN;
         private readonly ISnake _snake;
 
         public GameLogic(ISnake snake)
@@ -28,7 +28,7 @@ namespace snake.GameLogic.Implementations
 
         public void NextStep()
         {
-            switch (aORd)
+            switch (AorD)
             {
                 case ButtonState.NaN:
                     _snake.MoveForward();
@@ -36,12 +36,12 @@ namespace snake.GameLogic.Implementations
 
                 case ButtonState.A:
                     _snake.MoveLeft();
-                    aORd = ButtonState.NaN;
+                    AorD = ButtonState.NaN;
                     return;
 
                 case ButtonState.D:
                     _snake.MoveRight();
-                    aORd = ButtonState.NaN;
+                    AorD = ButtonState.NaN;
                     return;
             }
         }
@@ -50,15 +50,15 @@ namespace snake.GameLogic.Implementations
         {
             if (key.ToString() == "A")
             {
-                aORd = ButtonState.A;
+                AorD = ButtonState.A;
             }
             else if (key.ToString() == "D")
             {
-                aORd = ButtonState.D;
+                AorD = ButtonState.D;
             }
             else
             {
-                aORd = ButtonState.NaN;
+                AorD = ButtonState.NaN;
             }
         }
 

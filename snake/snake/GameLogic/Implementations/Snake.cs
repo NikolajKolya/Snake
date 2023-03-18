@@ -11,11 +11,15 @@ namespace snake.GameLogic.Implementations
 {
     public class Snake : ISnake
     {
-        Square firstHead = new Square();
+        Square OldTail = new Square();
 
-        Square oldHead = new Square();
+        Square OldHead = new Square();
+
         private int SnakeDirectionNow = 0;
+
         private SnakeDirection SnakeGo = SnakeDirection.Up;
+
+        private const int OneStep = 1;
 
         /// <summary>
         /// Квадраты змейки
@@ -27,6 +31,9 @@ namespace snake.GameLogic.Implementations
             RestartPosition();
         }
 
+        /// <summary>
+        /// Начальная позиция змейки
+        /// </summary>
         public void RestartPosition()
         {
             int center = Constants.Constants.GameFieldSize / 2;
@@ -42,6 +49,7 @@ namespace snake.GameLogic.Implementations
         public Dictionary<int, SquareState> GetSnakeSquares()
         {
             // Потом почитай про LINQ
+            // С помощью try catch ловим Exception который вылетает когда змейка ударяет саму себя
             try
             {
                 return
@@ -58,26 +66,27 @@ namespace snake.GameLogic.Implementations
 
         public void MoveForward()
         {
-            firstHead = _snakeSquares.First();
+            OldTail = _snakeSquares.First();
 
             _snakeSquares.RemoveAt(0);
 
             // Старая голова
-            oldHead = _snakeSquares.Last();
+            OldHead = _snakeSquares.Last();
 
+            // Определяем куда поползет змейка
             switch (SnakeGo)
             {
                 case SnakeDirection.Up:
-                    _snakeSquares.Add(new Square { X = oldHead.X, Y = oldHead.Y - 1 });
+                    _snakeSquares.Add(new Square { X = OldHead.X, Y = OldHead.Y - OneStep });
                     break;
                 case SnakeDirection.Down:
-                    _snakeSquares.Add(new Square { X = oldHead.X, Y = oldHead.Y + 1 });
+                    _snakeSquares.Add(new Square { X = OldHead.X, Y = OldHead.Y + OneStep });
                     break;
                 case SnakeDirection.Left:
-                    _snakeSquares.Add(new Square { X = oldHead.X - 1, Y = oldHead.Y });
+                    _snakeSquares.Add(new Square { X = OldHead.X - OneStep, Y = OldHead.Y });
                     break;
                 case SnakeDirection.Right:
-                    _snakeSquares.Add(new Square { X = oldHead.X + 1, Y = oldHead.Y });
+                    _snakeSquares.Add(new Square { X = OldHead.X + OneStep, Y = OldHead.Y });
                     break;
             }
         }
@@ -91,6 +100,8 @@ namespace snake.GameLogic.Implementations
         {
             ChangeSnakeDirection(1);
         }
+
+        // Определяем куда поползет змейка с учетом поворота в лево или в право
         private void ChangeSnakeDirection(int i)
         {
             SnakeDirectionNow = (i == 1 ?
@@ -102,7 +113,7 @@ namespace snake.GameLogic.Implementations
         }
         public void SnakeBecomeBiger()
         {
-            _snakeSquares.Insert(0, new Square { X = firstHead.X, Y = firstHead.Y });
+            _snakeSquares.Insert(0, new Square { X = OldTail.X, Y = OldTail.Y });
         }
     }
 }

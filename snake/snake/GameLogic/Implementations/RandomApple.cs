@@ -10,9 +10,9 @@ namespace snake.GameLogic.Implementations
     internal class RandomApple: IRandomApple
     {
         private readonly Random _random = new Random();
-        public int GenreateRandomApple()
+        public int GenеrаteRandomApple()
         {
-            return _random.Next(0, Constants.Constants.GameFieldSize * Constants.Constants.GameFieldSize + 1);
+            return _random.Next(0, Constants.Constants.GameFieldSize * Constants.Constants.GameFieldSize);
         }
     }
 }

@@ -62,6 +62,9 @@ namespace snake.ViewModels
             _stepsTimer.Elapsed += OnStepsTimer;
         }
 
+        /// <summary>
+        /// метод кнопки старт/стоп
+        /// </summary>
         private void StartStopGame()
         {
             _stepsTimer.Enabled = !_stepsTimer.Enabled;
@@ -92,20 +95,19 @@ namespace snake.ViewModels
 
             foreach (var snakeSquare in snakeSquares)
             {
+                //С помощью try catch ловим Exception который вылетает когда змейка переходит верхнию границу
                 try
                 {
+                    //Еслки змейка переходит нижнию границу
                     if (snakeSquare.Key >= Constants.Constants.GameFieldSize * Constants.Constants.GameFieldSize)
                     {
                         _gameLogic.Restart();
                     }
+                    //Еслки змейка налетает на яблоко
                     if (RowColumn[snakeSquare.Key] == SquareState.Aplle)
                     {
-                        applePlace = _randomApple.GenreateRandomApple();
+                        applePlace = _randomApple.GenеrаteRandomApple();
                         _gameLogic.AppleIsEaten();
-                    }
-                    if (RowColumn[snakeSquare.Key] == snakeSquare.Value)
-                    {
-                        _gameLogic.Restart();
                     }
                     RowColumn[snakeSquare.Key] = snakeSquare.Value;
                 }
